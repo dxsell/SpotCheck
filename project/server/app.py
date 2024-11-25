@@ -21,3 +21,13 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/test_db')
+def test_db():
+    try:
+        connection = db.engine.raw_connection()
+        connection.cursor().execute('select 1')
+        connection.close()
+        return{"message": "Database connection successful"}, 200
+    except Exception as e:
+        return{"error": str(e)}, 500
