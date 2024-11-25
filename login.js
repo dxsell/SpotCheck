@@ -30,3 +30,5 @@ loginForm.addEventListener("submit", async (event) => {
         errorMessage.style.display = "block";
     }
 });
+
+const isLoggedIn = localStorage.getItem("token") === "true";
