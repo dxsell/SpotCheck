@@ -2,14 +2,13 @@ const loginForm = document.getElementById("loginForm");
 const errorMessage = document.getElementById("errorMessage");
 
 loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
 
     try {
-        // Send login request to the backend
-        const response = await fetch("http://127.0.0.1:5000/api/auth/login", {
+        const response = await fetch("http://104.237.131.225:5000/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
@@ -18,14 +17,10 @@ loginForm.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (response.ok) {
-            // Store the token in localStorage
             localStorage.setItem("token", data.token);
             localStorage.setItem("username", data.username);
-
-            // Redirect to the homepage
-            window.location.href = "index.html";
+            window.location.href = "index.html";  // Redirect to homepage
         } else {
-            // Display error message
             errorMessage.textContent = data.error;
             errorMessage.style.display = "block";
         }

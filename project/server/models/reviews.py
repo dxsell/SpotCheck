@@ -1,12 +1,35 @@
-from .db import db
+from flask import Blueprint, request, jsonify
+from models.db import db
+from models.reviews import Reviews
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
-class Reviews(db.Model):
-    __tablename__ = 'reviews'
-    id = db.Column(db.Integer, primary_key=True)
-    userID = db.Column(db.Integer, db.ForeignKey('users.id'))
-    description = db.Column(db.String(50))
-    rating = db.Column(db.String(100))
-    location = db.Column(db.String(100), nullable=False)
+reviews_bp = Blueprint('reviews', __name__)
 
-    def to_dict(self):
-        return {"id": self.id, "username": self.username, "email": self.email}
+@reviews_bp.route('/', methods=['GET'])
+@jwt_required()
+def get_reviews():
+    user_id = get_jwt_identity()  # Get the logged-in user ID
+    reviews = Reviews.query.filter_by(userID=user_id).all()  # Fetch user-specific reviews
+    return jsonify([review.to_dict() for review in reviews]), 200
+
+@reviews_bp.route('/', methods=['POST'])
+@jwt_required()
+def add_review():
+    user_id = get_jwt_identity()  # Get the logged-in user ID
+    data = request.json
+
+    # Validate inputs
+    if not data.get('description') or not data.get('rating') or not data.get('location'):
+        return jsonify({"error": "All fields are required"}), 400
+
+    # Add review to the database
+    new_review = Reviews(
+        userID=user_id,
+        description=data['description'],
+        rating=data['rating'],
+        location=data['location']
+    )
+    db.session.add(new_review)
+    db.session.commit()
+
+    return jsonify({"message": "Review added successfully!"}), 201

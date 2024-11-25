@@ -1,5 +1,29 @@
 
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        window.location.href = "LoginPage.html";  // Redirect to login
+        return;
+    }
+
+    try {
+        const response = await fetch("http://104.237.131.225:5000/api/reviews", {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const reviews = await response.json();
+        const reviewsList = document.getElementById("reviews");
+
+        reviews.forEach(review => {
+            const li = document.createElement("li");
+            li.textContent = `${review.location}: ${review.description} (${review.rating} stars)`;
+            reviewsList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error fetching reviews:", error);
+    }
+});
 
 if (isLoggedIn === "true") {
     // Get the navigation bar
