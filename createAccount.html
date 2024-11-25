@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account - SpotCheck</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #84ce86;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .register-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    .register-container h2 {
+      margin-bottom: 20px;
+    }
+
+    .register-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .register-container button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .register-container button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="register-container">
+    <h2>Create Account</h2>
+    <form id="registerForm">
+      <input type="text" id="username" name="username" placeholder="Username" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="password" name="password" placeholder="Password" required />
+      <div class="error" id="errorMessage">Error creating account</div>
+      <button type="submit">Register</button>
+    </form>
+    <br>
+    <a href="LoginPage.html">Already have an account? Log in</a>
+  </div>
+
+  <script>
+    const registerForm = document.getElementById("registerForm");
+    const errorMessage = document.getElementById("errorMessage");
+
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const response = await fetch("http://104.237.131.225:5000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Account created successfully!");
+          window.location.href = "LoginPage.html"; // Redirect to login page
+        } else {
+          errorMessage.textContent = data.error;
+          errorMessage.style.display = "block";
+        }
+      } catch (error) {
+        console.error("Error creating account:", error);
+        errorMessage.textContent = "An unexpected error occurred.";
+        errorMessage.style.display = "block";
+      }
+    });
+  </script>
+</body>
+
+</html>
