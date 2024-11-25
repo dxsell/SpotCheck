@@ -19,6 +19,7 @@ loginForm.addEventListener("submit", async (event) => {
         if (response.ok) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("username", data.username);
+            localStorage.setItem("isLoggedIn", true);
             window.location.href = "index.html";  // Redirect to homepage
         } else {
             errorMessage.textContent = data.error;
@@ -31,4 +32,3 @@ loginForm.addEventListener("submit", async (event) => {
     }
 });
 
-const isLoggedIn = localStorage.getItem("token") === "true";

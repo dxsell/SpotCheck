@@ -2,8 +2,9 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
+
     if (!token) {
-        window.location.href = "LoginPage.html";  // Redirect to login
+        window.location.href = "LoginPage.html";
         return;
     }
 
@@ -13,8 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         const reviews = await response.json();
-        const reviewsList = document.getElementById("reviews");
 
+        const reviewsList = document.querySelector("#reviews ul");
         reviews.forEach(review => {
             const li = document.createElement("li");
             li.textContent = `${review.location}: ${review.description} (${review.rating} stars)`;

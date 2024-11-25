@@ -1,4 +1,5 @@
 // Check if the user is logged in
+const isLoggedIn = localStorage.getItem("isLoggedIn");
 
 // Initialize the map
 const map = L.map('map').setView([51.505, -0.09], 2);
@@ -96,30 +97,42 @@ if (isLoggedIn === "true") {
 
 document.getElementById('form').addEventListener('submit', async function (e) {
     e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("You must be logged in to submit a review.");
+        return;
+    }
+
     const lat = document.getElementById('lat').value;
     const lng = document.getElementById('lng').value;
     const review = document.getElementById('review').value;
-    const rating = document.getElementById('rating').dataset.rating || "0"; // Default rating
-    const address = document.getElementById('address').innerText;
+    const rating = document.getElementById('rating').dataset.rating || "0";
+    const location = document.getElementById('address').innerText;
 
-    // Add marker to the map
-    const marker = L.marker([lat, lng]).addTo(map);
-    marker.bindPopup(`${address}<br><b>Review:</b><br>${review}<br><b>Rating:</b> ${rating} stars`).openPopup();
+    try {
+        const response = await fetch("http://104.237.131.225:5000/api/reviews", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                description: review,
+                rating: rating,
+                location: location
+            }),
+        });
 
-    // Save Marker
-    const userMarkers = JSON.parse(localStorage.getItem("userMarkers") || "[]");
-    userMarkers.push({ lat, lng, address, review, rating });
-    localStorage.setItem("userMarkers", JSON.stringify(userMarkers));
+        const data = await response.json();
 
-    // Show confirmation message
-    document.getElementById('confirmation').style.display = 'block';
-    setTimeout(() => {
-        document.getElementById('confirmation').style.display = 'none';
-    }, 3000);
-
-    // Hide the form
-    const form = document.getElementById('reviewForm');
-    form.style.display = 'none';
-    formVisible = false;
-    document.getElementById('form').reset();
+        if (response.ok) {
+            alert("Review submitted successfully!");
+        } else {
+            alert(data.error || "Error submitting review");
+        }
+    } catch (error) {
+        console.error("Error submitting review:", error);
+        alert("An unexpected error occurred.");
+    }
 });

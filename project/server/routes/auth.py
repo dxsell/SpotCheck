@@ -57,6 +57,5 @@ def get_account():
 
     return jsonify({
         "username": user.username,
-        "email": user.email,
-        "member_since": user.created_at.strftime("%B %Y")
+        "email": user.email
     }), 200
