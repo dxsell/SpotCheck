@@ -17,6 +17,7 @@
             width: 80%;
             background: rgba(255, 255, 255, 0.9);
             margin: 0 auto;
+            border-radius: 10px;
         }
 
         .tab-buttons {
@@ -36,7 +37,6 @@
         .tab-buttons button.active {
             background-color: #fff;
             font-weight: bold;
-            border-top-left-radius: 4px;
         }
 
         .tab-content {
@@ -48,6 +48,7 @@
 
         .tab-content.active {
             display: block;
+            border: none;
         }
 
         .nav {
@@ -93,6 +94,13 @@
             font-size: 18px;
             margin: 10px 0;
         }
+        li {
+            display: block;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            list-style-type: none;
+        }
     </style>
 </head>
 
@@ -116,8 +124,8 @@
     <div class="tab-container">
 
         <div class="tab-buttons">
-            <button onclick="openTab(event, 'reviews')" class="active">My Reviews</button>
-            <button onclick="openTab(event, 'locations')">My Locations</button>
+            <button onclick="openTab(event, 'reviews')" class="active" style="border-top-left-radius: 10px;">My Reviews</button>
+            <button onclick="openTab(event, 'locations')" style="border-top-right-radius: 10px;">My Locations</button>
         </div>
 
         <div id="reviews" class="tab-content active">
@@ -130,7 +138,8 @@
         <div id="locations" class="tab-content">
             <h2>My Locations</h2>
             <p>Here you can see all the locations you have added (WIP)</p>
-            <ul></ul>
+            <ul>
+            </ul>
         </div>
     </div>
     <script>
