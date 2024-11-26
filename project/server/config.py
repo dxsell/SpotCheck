@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -11,3 +12,4 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.getenv('JWT_SECRET') or "default_secret_key"
+    JWT_ACCESS_TOKEN_EXPIRES = False

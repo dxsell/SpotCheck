@@ -42,12 +42,8 @@ map.on('click', function (e) {
 // Handle map click event
 const form = document.getElementById('reviewForm');
 form.classList.add('hidden');
-map.on('click', function (e) {
-    const { lat, lng } = e.latlng;
 
-});
-
-//Star Highlighting
+// Star Highlighting
 document.querySelectorAll('.star').forEach(star => {
     star.addEventListener('click', function () {
         const value = this.dataset.value;
@@ -83,12 +79,12 @@ if (isLoggedIn === "true") {
     // Append buttons to the navigation bar
     navBar.appendChild(logoutButton);
     navBar.appendChild(myAccountButton);
-    navBar.removeChild(loginButton);
 
     // Add logout functionality
     logoutButton.addEventListener("click", () => {
         // Clear login state
         localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("token");
 
         // Redirect to the login page
         window.location.href = "LoginPage.html";
@@ -99,10 +95,12 @@ document.getElementById('form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const token = localStorage.getItem("token");
-    if (!token) {
-        alert("You must be logged in to submit a review.");
-        return;
-    }
+console.log("Token:", token);
+if (!token) {
+    alert("You must be logged in to submit a review.");
+    return;
+}
+
 
     const lat = document.getElementById('lat').value;
     const lng = document.getElementById('lng').value;
@@ -110,8 +108,10 @@ document.getElementById('form').addEventListener('submit', async function (e) {
     const rating = document.getElementById('rating').dataset.rating || "0";
     const location = document.getElementById('address').innerText;
 
+    console.log("Submitting review:", { lat, lng, review, rating, location });
+
     try {
-        const response = await fetch("http://104.237.131.225:5000/api/reviews", {
+        const response = await fetch("http://104.237.131.225:5000/api/reviews/addreview", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -125,6 +125,7 @@ document.getElementById('form').addEventListener('submit', async function (e) {
         });
 
         const data = await response.json();
+        console.log("Response:", data);
 
         if (response.ok) {
             alert("Review submitted successfully!");
@@ -133,6 +134,12 @@ document.getElementById('form').addEventListener('submit', async function (e) {
         }
     } catch (error) {
         console.error("Error submitting review:", error);
-        alert("An unexpected error occurred.");
+
+        // Explicitly handle network errors
+        if (error.message === "Failed to fetch") {
+            alert("Unable to connect to the server. Please try again later.");
+        } else {
+            alert("An unexpected error occurred.");
+        }
     }
 });

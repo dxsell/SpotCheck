@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Reviews Page</title>
 
     <style>
         body {
@@ -40,52 +40,32 @@
             padding: 20px;
         }
 
-        h1,
-        h2,
-        h3 {
+        h1, h2, h3 {
             text-align: center;
             margin: 10px 0;
         }
 
-        button {
-            background-color: #4caf50;
-            color: rgb(255, 255, 255);
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 10%;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .center-container {
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .review,
-        li {
+        .review {
             display: flex;
             background-color: #ffffff;
             align-content: center;
             width: 90%;
-            height: 5vh;
             padding: 20px;
             border-radius: 8px;
-            margin: 20px;
+            margin: 20px auto;
         }
 
         ul {
             display: block;
             width: 90%;
+        }
+        li {
+            display: block;
+            background-color: #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            list-style-type: none;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -101,15 +81,35 @@
     <h1>SpotCheck: Reviews</h1>
     <h3>Rate these reviews!</h3>
     <br>
-    <ul id="reviews">
-        <li>This is test text</li>
+    <ul id="reviews-list">
+        <!-- Reviews will be dynamically added here -->
     </ul>
 
     <script>
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-    </script>
-    <script src="reviews.js"></script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                window.location.href = "LoginPage.html";
+                return;
+            }
 
+            try {
+                const response = await fetch("http://104.237.131.225:5000/api/reviews/getallreview", {
+                    headers: { "Authorization": `Bearer ${token}` }
+                });
+                const reviews = await response.json();
+
+                const reviewsList = document.getElementById("reviews-list");
+                reviews.forEach(review => {
+                    const reviewItem = document.createElement("li");
+                    reviewItem.textContent = `${review.location}: ${review.description} (${review.rating} stars)`;
+                    reviewsList.appendChild(reviewItem);
+                });
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
+            }
+        });
+    </script>
 </body>
 
 </html>

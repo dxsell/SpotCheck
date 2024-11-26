@@ -9,7 +9,10 @@ from routes.reviews import reviews_bp
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app)
+# Enable CORS
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Initialize JWT and Database
 JWTManager(app)
 db.init_app(app)
 
@@ -21,15 +24,15 @@ app.register_blueprint(reviews_bp, url_prefix='/api/reviews')
 def home():
     return {"message": "Welcome to the Flask Backend!"}
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
 @app.route('/test_db')
 def test_db():
     try:
         connection = db.engine.raw_connection()
         connection.cursor().execute('select 1')
         connection.close()
-        return{"message": "Database connection successful"}, 200
+        return {"message": "Database connection successful"}, 200
     except Exception as e:
-        return{"error": str(e)}, 500
+        return {"error": str(e)}, 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
