@@ -87,7 +87,7 @@
       const password = document.getElementById("password").value.trim();
 
       try {
-        const response = await fetch("http://104.237.131.225:5000/api/auth/register", {
+        const response = await fetch("http://45.79.22.18:5000/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, email, password }),

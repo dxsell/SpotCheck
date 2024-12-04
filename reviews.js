@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch("http://104.237.131.225:5000/api/reviews", {
+        const response = await fetch("http://45.79.22.18:5000/api/reviews", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

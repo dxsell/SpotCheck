@@ -165,7 +165,7 @@
 
             // Fetch account details
             try {
-                const accountResponse = await fetch("http://104.237.131.225:5000/api/auth/account", {
+                const accountResponse = await fetch("http://45.79.22.18:5000/api/auth/account", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const accountData = await accountResponse.json();
@@ -179,7 +179,7 @@
 
             // Fetch reviews
             try {
-                const reviewsResponse = await fetch("http://104.237.131.225:5000/api/reviews/getreview", {
+                const reviewsResponse = await fetch("http://45.79.22.18:5000/api/reviews/getreview", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const reviews = await reviewsResponse.json();

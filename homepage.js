@@ -111,7 +111,7 @@ if (!token) {
     console.log("Submitting review:", { lat, lng, review, rating, location });
 
     try {
-        const response = await fetch("http://104.237.131.225:5000/api/reviews/addreview", {
+        const response = await fetch("http://45.79.22.18:5000/api/reviews/addreview", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
