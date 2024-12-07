@@ -9,10 +9,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Add the search control
+// Add the search button
 L.Control.geocoder().addTo(map);
 
-// Flag to track form visibility
 let formVisible = false;
 
 // Reverse Geocoding
@@ -24,7 +23,7 @@ map.on('click', function (e) {
     geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), results => {
         if (results.length > 0) {
             const address = results[0].name;
-            document.getElementById('address').innerText = address; // Update the address field
+            document.getElementById('address').innerText = address; 
         }
         if (formVisible) {
             form.classList.remove('show');
@@ -39,7 +38,6 @@ map.on('click', function (e) {
     });
 });
 
-// Handle map click event
 const form = document.getElementById('reviewForm');
 form.classList.add('hidden');
 
@@ -54,7 +52,7 @@ document.querySelectorAll('.star').forEach(star => {
             }
         });
         this.classList.add('selected');
-        document.getElementById('rating').dataset.rating = value; // Store rating value
+        document.getElementById('rating').dataset.rating = value; 
     });
 });
 
@@ -64,14 +62,14 @@ if (isLoggedIn === "true") {
 
     // Create the "My Account" button
     const myAccountButton = document.createElement("a");
-    myAccountButton.href = "/accountsPage.html"; // Adjust the href as needed
+    myAccountButton.href = "/accountsPage.html"; 
     myAccountButton.textContent = "My Account";
-    myAccountButton.style.float = "right"; // Align to the right
+    myAccountButton.style.float = "right"; 
     myAccountButton.style.marginRight = "10px";
 
     // Create the "Logout" button
     const logoutButton = document.createElement("a");
-    logoutButton.href = "#"; // Use "#" or leave href empty to prevent navigation
+    logoutButton.href = "#"; 
     logoutButton.textContent = "Logout";
     logoutButton.style.float = "right";
     logoutButton.style.marginRight = "10px";
@@ -86,7 +84,7 @@ if (isLoggedIn === "true") {
         localStorage.removeItem("isLoggedIn");
         localStorage.removeItem("token");
 
-        // Redirect to the login page
+        
         window.location.href = "LoginPage.html";
     });
 }

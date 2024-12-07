@@ -14,13 +14,13 @@ def add_review():
     Endpoint to add a new review to the database.
     Requires an authenticated user and valid input data.
     """
-    user_id = get_jwt_identity()  # Get the current user's ID from the JWT token
+    user_id = get_jwt_identity()  
     data = request.json
 
-    # Debugging: Print received data
+    
     print(f"Received review data: {data}")
 
-    # Validate input data
+    
     if not data.get('description') or not data.get('rating') or not data.get('location'):
         return jsonify({"error": "All fields (description, rating, location) are required"}), 400
 
@@ -47,12 +47,12 @@ def add_review():
 @reviews_bp.route('/getreview', methods=['GET'])
 @jwt_required()
 def get_reviews():
-    print(f"Request Headers: {request.headers}")  # Log incoming headers
+    print(f"Request Headers: {request.headers}")  
     """
     Endpoint to fetch all reviews for the authenticated user.
     """
-    user_id = get_jwt_identity()  # Get the current user's ID from the JWT token
-    print(f"Authenticated user ID: {user_id}")  # Debugging: Print user ID
+    user_id = get_jwt_identity()  
+    print(f"Authenticated user ID: {user_id}")  
 
     try:
         # Fetch reviews for the authenticated user
@@ -77,12 +77,12 @@ def get_reviews():
 @reviews_bp.route('/getallreview', methods=['GET'])
 @jwt_required()
 def get_allreviews():
-    print(f"Request Headers: {request.headers}")  # Log incoming headers
+    print(f"Request Headers: {request.headers}")  
     """
     Endpoint to fetch all reviews for the authenticated user.
     """
-    user_id = get_jwt_identity()  # Get the current user's ID from the JWT token
-    print(f"Authenticated user ID: {user_id}")  # Debugging: Print user ID
+    user_id = get_jwt_identity()  
+    print(f"Authenticated user ID: {user_id}")  
 
     try:
         # Fetch reviews for the authenticated user
@@ -112,7 +112,7 @@ def delete_review(review_id):
     Endpoint to delete a specific review by its ID.
     Requires the user to be authenticated and the review to belong to the user.
     """
-    user_id = get_jwt_identity()  # Get the current user's ID from the JWT token
+    user_id = get_jwt_identity()  
     print(f"Authenticated user ID: {user_id}, Deleting review ID: {review_id}")
 
     try:

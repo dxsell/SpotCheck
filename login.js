@@ -10,7 +10,7 @@ loginForm.addEventListener("submit", async (event) => {
 
 
     try {
-        const response = await fetch("http://45.33.9.125:5000/api/auth/login", {
+        const response = await fetch("http://45.79.22.18:5000/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),

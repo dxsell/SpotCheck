@@ -11,7 +11,6 @@ auth_bp = Blueprint('auth', __name__)
 def register():
     data = request.json
 
-    # Validate input fields
     if not data.get('username') or not data.get('password') or not data.get('email'):
         return jsonify({"error": "All fields are required"}), 400
 
@@ -33,14 +32,12 @@ def register():
 def login():
     data = request.json
 
-    # Validate inputs
     if not data.get('username') or not data.get('password'):
         return jsonify({"error": "Username and password are required"}), 400
 
     # Query user from the database
     user = User.query.filter_by(username=data['username']).first()
     if user and bcrypt.check_password_hash(user.password, data['password']):
-        # Generate a JWT token
         token = create_access_token(identity=user.id)
         return jsonify({"token": token, "username": user.username}), 200
 
@@ -49,7 +46,7 @@ def login():
 @auth_bp.route('/account', methods=['GET'])
 @jwt_required()
 def get_account():
-    user_id = get_jwt_identity()  # Get the logged-in user ID
+    user_id = get_jwt_identity()  
     user = User.query.get(user_id)
 
     if not user:

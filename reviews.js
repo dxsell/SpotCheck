@@ -32,14 +32,14 @@ if (isLoggedIn === "true") {
 
     // Create the "My Account" button
     const myAccountButton = document.createElement("a");
-    myAccountButton.href = "/accountsPage.html"; // Adjust the href as needed
+    myAccountButton.href = "/accountsPage.html"; 
     myAccountButton.textContent = "My Account";
-    myAccountButton.style.float = "right"; // Align to the right
+    myAccountButton.style.float = "right"; 
     myAccountButton.style.marginRight = "10px";
 
     // Create the "Logout" button
     const logoutButton = document.createElement("a");
-    logoutButton.href = "#"; // Use "#" or leave href empty to prevent navigation
+    logoutButton.href = "#"; 
     logoutButton.textContent = "Logout";
     logoutButton.style.float = "right";
     logoutButton.style.marginRight = "10px";
@@ -54,7 +54,7 @@ if (isLoggedIn === "true") {
         // Clear login state
         localStorage.removeItem("isLoggedIn");
 
-        // Redirect to the login page
+        
         window.location.href = "LoginPage.html";
     });
 }
